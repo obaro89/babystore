@@ -8,64 +8,69 @@
 			rel="stylesheet"
 			href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
 		/>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Days+One&display=swap"
+			rel="stylesheet"
+		/>
 		<link rel="stylesheet" href="css/styles.css" />
 		<title>goHarness Project UI</title>
 	</head>
 	<body>
 		<nav>
-			<h2 class="logo">BabyStore</h2>
+			<h2 class="logo">babystore</h2>
 			<div class="tab-links">
-				<a href="#discussions" class="links">Discussions</a>
-				<a href="#articles" class="links">Articles</a>
+				<p class="links-a active"><a>Discussions</a></p>
+				<p class="links-b"><a>Articles</a></p>
 			</div>
 			<div class="search-box">
-				<input
-					type="search"
-					class="search-input"
-					placeholder="Enter a search keyword"
-				/>
+				<div class="input-area">
+					<i class="bi bi-search"></i>
+					<input
+						type="search"
+						class="search-input"
+						placeholder="Enter a search keyword"
+					/>
+				</div>
 			</div>
 		</nav>
 
-		<section class="new-post">
-			<form action="" class="add-post">
-				<p>
-					<label for="Title">Title</label>
-					<textarea placeholder="Add a title for your post"></textarea>
-				</p>
-				<p>
-					<label for="Desc">Description</label>
-					<textarea placeholder="Explain the problem"></textarea>
-				</p>
-				<p>
-					<label for="anonymous">Post Anonymously</label>
-					<input type="checkbox" name="" id="" />
-				</p>
-				<p>
-					<h2><small>Select Categories</small></h2>
-					<label for="anonymous"
-						>Baby <input type="checkbox" name="" id=""
-					/></label>
-					<label for="anonymous"
-						>Toddler <input type="checkbox" name="" id=""
-					/></label>
-					<label for="anonymous"
-						>Shopping <input type="checkbox" name="" id=""
-					/></label>
-					<label for="anonymous"
-						>Parenting <input type="checkbox" name="" id=""
-					/></label>
-					<label for="anonymous"
-						>Health <input type="checkbox" name="" id=""
-					/></label>
-					<label for="anonymous"
-						>Pregnancy <input type="checkbox" name="" id=""
-					/></label>
-				</p>
+		<div id="content">
+			<section class="new-post">
+				<form action="" class="add-post">
+					<p>
+						<label for="Title">Title</label>
+						<textarea placeholder="Add a title for your post"></textarea>
+					</p>
+					<p>
+						<label for="Desc">Description</label>
+						<textarea placeholder="Explain your problem"></textarea>
+					</p>
+					<p class="j-right">
+						<label for="anonymous">Post Anonymously&nbsp;<input type="checkbox" name="" id="" /></label>
+						
+					</p>
+					<p class="cat">
+						<h4><small>Select Categories</small></h4>
+						<label for="anonymous">Baby <input type="checkbox" name="" id=""/></label>
+						<label for="anonymous">Toddler <input type="checkbox" name="" id=""/></label>
+						<label for="anonymous">Shopping <input type="checkbox" name="" id=""/></label>
+						<label for="anonymous">Parenting <input type="checkbox" name="" id=""/></label>
+						<label for="anonymous">Health <input type="checkbox" name="" id=""/></label>
+						<label for="anonymous">Pregnancy <input type="checkbox" name="" id=""/></label>
+					</p>
 
-				<button>Post</button>
-			</form>
-		</section>
+				<button class="btn btn-new-post large mt">
+					 Post
+				</button>	
+				</form>		
+			</section>
+			
+
+			
+		</div>
+		
 
 		<section class="footer">&copy; 2021 Osaretin</section>
 	</body>
