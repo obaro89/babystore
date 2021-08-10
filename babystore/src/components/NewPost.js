@@ -1,49 +1,173 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { addDiscussion } from '../actions/discussion';
 
 const NewPost = () => {
+	const dispatch = useDispatch();
+	const [redirect, setRedirect] = useState(false);
+	const [anonymous, setAnonymous] = useState(false);
+	const [categories, setCategories] = useState([]);
+	const [formData, setFormData] = useState({
+		title: '',
+		content: '',
+		author: '',
+	});
+
+	const handleAnonymous = (e) => {
+		setAnonymous(!anonymous);
+		if (e.target.checked) {
+			setFormData({
+				...formData,
+				author: 'Anonymous',
+			});
+		}
+	};
+
+	const handleCategories = (e) => {
+		let { value, checked } = e.target;
+		if (checked) {
+			setCategories([...categories, value]);
+		} else {
+			setCategories(categories.filter((c) => c !== value));
+		}
+	};
+
+	const onChange = (e) => {
+		setFormData({
+			...formData,
+			[e.target.name]: e.target.value,
+		});
+	};
+
+	const onSubmit = (e) => {
+		e.preventDefault();
+		dispatch(addDiscussion({ ...formData, category: categories }));
+		setRedirect(true);
+	};
+
+	const { title, content, author } = formData;
+
 	return (
 		<div id='content' className='add-post-content'>
+			{redirect && <Redirect to='/discussions' />}
 			<section className='new-post'>
-				<form action='' className='add-post'>
+				<form className='add-post'>
 					<p>
 						<label for='Title'>Title</label>
-						<textarea placeholder='Add a title for your post'></textarea>
+						<textarea
+							onChange={onChange}
+							value={title}
+							name='title'
+							placeholder='Add a title for your post'
+							required
+						></textarea>
 					</p>
 					<p>
-						<label for='Desc'>Description</label>
-						<textarea placeholder='Explain your problem'></textarea>
+						<label for='content'>Description</label>
+						<textarea
+							required
+							onChange={onChange}
+							value={content}
+							name='content'
+							placeholder='Explain your problem'
+						></textarea>
 					</p>
+					{!anonymous && (
+						<p>
+							<label for='Author'>Name</label>
+							<input
+								required
+								onChange={onChange}
+								type='text'
+								name='author'
+								value={author}
+								placeholder='Enter your name'
+								className='author-input'
+							/>
+						</p>
+					)}
 					<p className='j-right'>
 						<label for='anonymous'>
-							Post Anonymously&nbsp;
-							<input type='checkbox' name='' id='' />
+							<input
+								onChange={handleAnonymous}
+								type='checkbox'
+								name='anonymous'
+								id='anonymous'
+								value='Anonymous'
+							/>
+							Post Anonymously
 						</label>
 					</p>
 					<p className='cat'>
 						<h4>
 							<small>Select Categories</small>
 						</h4>
-						<label for='anonymous'>
-							Baby <input type='checkbox' name='' id='' />
+						<label for='baby'>
+							<input
+								onChange={handleCategories}
+								type='checkbox'
+								name='baby'
+								id='baby'
+								value='baby'
+							/>
+							Baby
 						</label>
-						<label for='anonymous'>
-							Toddler <input type='checkbox' name='' id='' />
+						<label for='toddler'>
+							<input
+								onChange={handleCategories}
+								type='checkbox'
+								name='toddler'
+								id='toddler'
+								value='toddler'
+							/>
+							Toddler
 						</label>
-						<label for='anonymous'>
-							Shopping <input type='checkbox' name='' id='' />
+						<label for='shopping'>
+							<input
+								onChange={handleCategories}
+								type='checkbox'
+								name='shopping'
+								id='shopping'
+								value='shopping'
+							/>
+							Shopping
 						</label>
-						<label for='anonymous'>
-							Parenting <input type='checkbox' name='' id='' />
+						<label for='parenting'>
+							<input
+								onChange={handleCategories}
+								type='checkbox'
+								name='parenting'
+								id='parenting'
+								value='parenting'
+							/>
+							Parenting
 						</label>
-						<label for='anonymous'>
-							Health <input type='checkbox' name='' id='' />
+						<label for='health'>
+							<input
+								onChange={handleCategories}
+								type='checkbox'
+								name='health'
+								id='health'
+								value='health'
+							/>
+							Health
 						</label>
-						<label for='anonymous'>
-							Pregnancy <input type='checkbox' name='' id='' />
+						<label for='pregnancy'>
+							<input
+								onChange={handleCategories}
+								type='checkbox'
+								name='pregnancy'
+								id='pregnancy'
+								value='pregnancy'
+							/>
+							Pregnancy
 						</label>
 					</p>
 
-					<button className='btn btn-new-post large mt'>Post</button>
+					<button onClick={onSubmit} className='btn btn-new-post large mt'>
+						Post
+					</button>
 				</form>
 			</section>
 		</div>
