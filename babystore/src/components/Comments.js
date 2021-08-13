@@ -1,61 +1,106 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router';
+import Loading from './Layout/Loading';
+import photo from '../img/profile.jpg';
+import formatDate from '../utilities/dateFormater';
+import firebase from 'firebase';
+import database from '../firebase/firebase';
+import { v4 as uuidv4 } from 'uuid';
+import { isEmpty } from 'validator';
+import { useDispatch } from 'react-redux';
+import { setNotification } from '../actions/notification';
 
 const Comments = () => {
-	return (
-		<div id='content' class=' comment-content'>
-			<section class='discussion'>
-				<div class='poster'>
-					<div class='poster-profile'>
-						<img src='img/profile.jpg' alt='' />
-						<p class='poster-details'>
-							<span class='name'>John Doe</span>
-							<small>15 July 2021</small>
+	const params = useParams();
+	const dispatch = useDispatch();
+	const { discussions, isLoading } = useSelector((state) => state.discussions);
+	const discussion = discussions.filter((d) => d.id === params.id);
+	const { author, date, title, replies, content } = discussion[0];
+	const [commentInput, setCommentInput] = useState('');
+	const [posterInput, setPosterInput] = useState('');
+
+	const postComment = (e) => {
+		e.preventDefault();
+		if (isEmpty(commentInput) || isEmpty(posterInput)) {
+			return dispatch(setNotification('Some Fields are Empty', 'danger'));
+		}
+		database
+			.collection('discussions')
+			.doc(params.id)
+			.update({
+				replies: firebase.firestore.FieldValue.arrayUnion({
+					poster: posterInput,
+					text: commentInput,
+					replyID: uuidv4(),
+				}),
+			})
+
+			.then(() => {
+				setCommentInput('');
+				setPosterInput('');
+			});
+	};
+	return isLoading ? (
+		<Loading />
+	) : (
+		<div id='content' className=' comment-content'>
+			<section className='discussion'>
+				<div className='poster'>
+					<div className='poster-profile'>
+						<img src={photo} alt='' />
+						<p className='poster-details'>
+							<span className='name'>{author}</span>
+							<small>{formatDate(date)}</small>
 						</p>
 					</div>
-					<div class='post'>
-						<h3 class='post-title'>Nausea</h3>
-						<p class='post-content'>How to combat early nausea in pregnancy</p>
+					<div className='post'>
+						<h3 className='post-title'>{title}</h3>
+						<p className='post-content'>{content}</p>
 
-						<p class='show-comments'>
-							<button class='btn btn-comment'>Comments</button>
+						<p className='show-comments'>
+							<button className='btn btn-comment'>
+								{replies.length} Comments
+							</button>
 						</p>
-						<p class='comment-page'>
-							<div class='poster-profile'>
-								<p class='poster-details'>
-									<span class='name'>Mark Joe</span>
-									<small>12 July 1991</small>
-								</p>
-							</div>
-							<div class='comment'>
-								Lorem ipsum dolor sit amet consectetur adipisicing elit.
-								Assumenda soluta sit modi, amet itaque fugiat distinctio cumque
-								aliquid laboriosam iusto.
-							</div>
-						</p>
-						<p class='comment-page'>
-							<div class='poster-profile'>
-								<p class='poster-details'>
-									<span class='name'>Mark Joe</span>
-									<small>12 July 1991</small>
-								</p>
-							</div>
-							<div class='comment'>
-								Lorem ipsum dolor sit amet consectetur adipisicing elit.
-								Assumenda soluta sit modi, amet itaque fugiat distinctio cumque
-								aliquid laboriosam iusto.
-							</div>
-						</p>
+					</div>
 
-						<form class='add-comment'>
+					<div className='comments'>
+						{replies.map(({ replyID, text, poster }) => (
+							<p className='comment-page' key={replyID}>
+								<div className='poster-profile'>
+									<p className='poster-details'>
+										<span className='name'>{poster}</span>
+									</p>
+								</div>
+								<div className='comment'>{text}</div>
+							</p>
+						))}
+					</div>
+					<form className='add-comment'>
+						<p>
 							<input
 								type='text'
 								name=''
-								value=''
-								placeholder='Your message here'
+								value={posterInput}
+								placeholder='Your Name'
+								onChange={(e) => setPosterInput(e.target.value)}
 							/>
-							<button>Send</button>
-						</form>
-					</div>
+						</p>
+						<p>
+							<textarea
+								type='text'
+								name=''
+								value={commentInput}
+								placeholder='Your message here'
+								onChange={(e) => setCommentInput(e.target.value)}
+							></textarea>
+						</p>
+
+						<button className='btn' onClick={postComment}>
+							Send
+						</button>
+					</form>
 				</div>
 			</section>
 		</div>

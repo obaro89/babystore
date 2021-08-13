@@ -3,13 +3,24 @@ import profilePhoto from '../img/profile.jpg';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import formatDate from '../utilities/dateFormater';
+import Loading from './Layout/Loading';
+import firebase from 'firebase';
+import database from '../firebase/firebase';
 
 const Discussions = () => {
 	const { discussions, isLoading } = useSelector((state) => state.discussions);
-
+	const likePost = (id) => {
+		database
+			.collection('discussions')
+			.doc(id)
+			.update({
+				likes: firebase.firestore.FieldValue.increment(1),
+			});
+	};
 	return (
 		<section id='content'>
 			<div class='discussions'>
+				{isLoading && <Loading />}
 				{!isLoading &&
 					(discussions.length > 0 ? (
 						discussions.map(
@@ -24,18 +35,28 @@ const Discussions = () => {
 											</p>
 										</div>
 										<div className='post'>
-											<h3 className='post-title'>{title}</h3>
+											<h3 className='post-title'>
+												<Link
+													className='link-title'
+													to={`/discussions/${id}/comments`}
+												>
+													{title}
+												</Link>
+											</h3>
 											<p className='post-content'>{content}</p>
 											<p className='post-activities'>
-												<span className='likes'>{likes.length} Likes</span>
+												<span className='likes'>{likes} Likes</span>
 												<span className='replies'>
-													<Link to='/discussions/comments' className='links'>
+													<Link
+														to={`/discussions/${id}/comments`}
+														className='links-reply'
+													>
 														{replies.length} Replies
 													</Link>
 												</span>
 											</p>
 											<p className='social'>
-												<span className='like'>
+												<span className='like' onClick={() => likePost(id)}>
 													<i className='bi bi-hand-thumbs-up-fill'></i>
 												</span>
 												<span className='reply'>

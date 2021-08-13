@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 import { addDiscussion } from '../actions/discussion';
+import Loading from './Layout/Loading';
+import { isEmpty } from 'validator';
+import { setNotification } from '../actions/notification';
 
 const NewPost = () => {
 	const dispatch = useDispatch();
-	const [redirect, setRedirect] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 	const [anonymous, setAnonymous] = useState(false);
 	const [categories, setCategories] = useState([]);
 	const [formData, setFormData] = useState({
@@ -42,15 +44,29 @@ const NewPost = () => {
 
 	const onSubmit = (e) => {
 		e.preventDefault();
-		dispatch(addDiscussion({ ...formData, category: categories }));
-		setRedirect(true);
+		setIsLoading(true);
+		if (isEmpty(title) || isEmpty(content) || isEmpty(author)) {
+			setIsLoading(false);
+			return dispatch(setNotification('Some Fields are Empty', 'danger'));
+		}
+
+		addDiscussion({ ...formData, category: categories }).then((resp) => {
+			setIsLoading(false);
+			if (resp) {
+				setFormData({ title: '', content: '', author: '' });
+				dispatch(
+					setNotification('Your new discussion has been posted', 'success')
+				);
+			}
+		});
 	};
 
 	const { title, content, author } = formData;
 
-	return (
+	return isLoading ? (
+		<Loading />
+	) : (
 		<div id='content' className='add-post-content'>
-			{redirect && <Redirect to='/discussions' />}
 			<section className='new-post'>
 				<form className='add-post'>
 					<p>

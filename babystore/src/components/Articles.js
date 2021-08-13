@@ -5,7 +5,7 @@ const Articles = () => {
 		<div id='article-content'>
 			<section className='articles'>
 				<h3 className='art-source'>
-					<a href='#'>The conversation.com</a>
+					<a href='http://www.conversation.com'>The conversation.com</a>
 				</h3>
 				<h2 className='title'>Baby Immune Development</h2>
 				<small>21 Jan 2020</small>
@@ -18,7 +18,7 @@ const Articles = () => {
 					doloremque maiores.....
 				</p>
 				<p className='social'>
-					<span className className='like'>
+					<span className='like'>
 						<i className='bi bi-hand-thumbs-up-fill'></i>&nbsp; 2
 					</span>
 
@@ -30,7 +30,7 @@ const Articles = () => {
 
 			<section className='articles'>
 				<h3 className='art-source'>
-					<a href='#'>The conversation.com</a>
+					<a href='http://www.conversation.com'>The conversation.com</a>
 				</h3>
 				<h2 className='title'>Baby Immune Development</h2>
 				<small>21 Jan 2020</small>

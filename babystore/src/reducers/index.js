@@ -15,6 +15,16 @@ export const discussionReducer = (state = initialState, action) => {
 				discussions: payload,
 			};
 
+		case types.ISLOADING:
+			return {
+				...state,
+				isLoading: true,
+			};
+		case types.STOP_LOADING:
+			return {
+				...state,
+				isLoading: false,
+			};
 		default:
 			return state;
 	}
