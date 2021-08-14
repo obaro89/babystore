@@ -11,6 +11,7 @@ import store from './store';
 import { getDiscussions } from './actions/discussion';
 import Notification from './components/Notification';
 import Comments from './components/Comments';
+import Filter from './components/Filter';
 
 function App() {
 	useEffect(() => {
@@ -22,12 +23,19 @@ function App() {
 			<Router>
 				<Fragment>
 					<Nav />
-					<Notification />
-					<Route exact path='/discussions' component={Discussions} />
-					<Route exact path='/' component={Discussions} />
-					<Route exact path='/articles' component={Articles} />
-					<Route exact path='/addpost' component={NewPost} />
-					<Route exact path='/discussions/:id/comments' component={Comments} />
+					<section id='content'>
+						<Filter />
+						<Notification />
+						<Route exact path='/discussions' component={Discussions} />
+						<Route exact path='/' component={Discussions} />
+						<Route exact path='/articles' component={Articles} />
+						<Route exact path='/addpost' component={NewPost} />
+						<Route
+							exact
+							path='/discussions/:id/comments'
+							component={Comments}
+						/>
+					</section>
 				</Fragment>
 			</Router>
 		</Provider>

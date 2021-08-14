@@ -18,7 +18,7 @@ const Discussions = () => {
 			});
 	};
 	return (
-		<section id='content'>
+		<section>
 			<div class='discussions'>
 				{isLoading && <Loading />}
 				{!isLoading &&
