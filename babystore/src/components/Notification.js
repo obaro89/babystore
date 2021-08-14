@@ -7,12 +7,12 @@ const Notification = () => {
 	return (
 		alertState !== null &&
 		alertState.length > 0 &&
-		alertState.map((a) => (
+		alertState.map(({ msg, notificationType }) => (
 			<Slide right>
-				<div className='alert'>
+				<div className={`alert ${notificationType}`}>
 					<div className='inner-msg'>
 						<h6>Notification</h6>
-						<p className='msg'>{a.msg}</p>
+						<p className='msg'>{msg}</p>
 					</div>
 				</div>
 			</Slide>

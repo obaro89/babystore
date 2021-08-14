@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import Loading from './Layout/Loading';
 import photo from '../img/profile.jpg';
@@ -11,12 +10,28 @@ import { isEmpty } from 'validator';
 import { useDispatch } from 'react-redux';
 import { setNotification } from '../actions/notification';
 
-const Comments = () => {
+const Comments = (props) => {
+	const [discussion, setDiscussion] = useState({
+		author: '',
+		date: '',
+		title: '',
+		replies: [],
+		content: '',
+	});
+
+	const isLoading = false;
 	const params = useParams();
+
+	useEffect(() => {
+		database
+			.collection('discussions')
+			.doc(params.id)
+			.get()
+			.then((data) => setDiscussion(data.data()));
+	}, [params.id]);
+
 	const dispatch = useDispatch();
-	const { discussions, isLoading } = useSelector((state) => state.discussions);
-	const discussion = discussions.filter((d) => d.id === params.id);
-	const { author, date, title, replies, content } = discussion[0];
+	const { author, date, title, replies, content } = discussion;
 	const [commentInput, setCommentInput] = useState('');
 	const [posterInput, setPosterInput] = useState('');
 
@@ -44,7 +59,7 @@ const Comments = () => {
 	return isLoading ? (
 		<Loading />
 	) : (
-		<div id='content' className=' comment-content'>
+		<div className=' comment-content'>
 			<section className='discussion'>
 				<div className='poster'>
 					<div className='poster-profile'>

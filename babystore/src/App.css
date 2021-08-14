@@ -6,15 +6,17 @@
 }
 .comment-page {
 	margin-top: 10px;
-	background-color: rgb(243, 234, 234);
-	border: 1px solid #eeeeee;
+	background-color: rgb(255, 255, 255);
+	border: 1px solid #e2dfdf;
 	padding: 5px;
 }
 .danger {
-	color: red;
+	background-color: #f8d7da;
+	color: #93205c;
 }
 .success {
-	color: green;
+	background-color: #d1e7dd;
+	color: #0f5132;
 }
 .links-reply {
 	color: #bdaaaa;
@@ -436,16 +438,18 @@ small {
 	height: 40px;
 	width: 100%;
 	padding: 15px;
-	border: 2px solid #ececec;
+	border: 1px solid #ececec;
 	font-size: 16px;
 	margin-bottom: 5px;
+	background-color: #e0dbdb;
 }
 .add-comment textarea {
 	width: 100%;
 	height: 70px;
 	padding: 15px;
-	border: 2px solid #ececec;
+	border: 1px solid #ececec;
 	font-size: 16px;
+	background-color: #e0dbdb;
 }
 .add-comment button {
 	width: 100%;
@@ -490,7 +494,7 @@ small {
 
 .inner-msg h6 {
 	text-align: center;
-	background-color: #f2f2f2;
+	/* background-color: #f2f2f2; */
 	height: 30px;
 	display: flex;
 	justify-content: center;
@@ -655,7 +659,30 @@ small {
 		right: 0;
 		width: 350px;
 		height: 80px;
-		background-color: #fafafa;
+		border: 2px solid #eeeeee;
+		border-radius: 3px;
+		transition: all;
+	}
+	.alert.success {
+		position: fixed;
+		top: 50px;
+		right: 0;
+		background-color: #d1e7dd;
+		color: #0f5132;
+		width: 350px;
+		height: 80px;
+		border: 2px solid #eeeeee;
+		border-radius: 3px;
+		transition: all;
+	}
+	.alert.danger {
+		position: fixed;
+		top: 50px;
+		right: 0;
+		background-color: #f8d7da;
+		color: #93205c;
+		width: 350px;
+		height: 80px;
 		border: 2px solid #eeeeee;
 		border-radius: 3px;
 		transition: all;
