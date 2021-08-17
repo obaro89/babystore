@@ -60,7 +60,12 @@ const Discussions = () => {
 													<i className='bi bi-hand-thumbs-up-fill'></i>
 												</span>
 												<span className='reply'>
-													<i className='bi bi-reply-fill'></i>
+													<Link
+														to={`/discussions/${id}/comments`}
+														className='links-reply-icon'
+													>
+														<i className='bi bi-reply-fill'></i>
+													</Link>
 												</span>
 												<span className='share'>
 													<i className='bi bi-share-fill'></i>

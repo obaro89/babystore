@@ -19,7 +19,7 @@ const Comments = (props) => {
 		content: '',
 	});
 
-	const isLoading = false;
+	let isLoading = false;
 	const params = useParams();
 
 	useEffect(() => {
@@ -27,8 +27,10 @@ const Comments = (props) => {
 			.collection('discussions')
 			.doc(params.id)
 			.get()
-			.then((data) => setDiscussion(data.data()));
-	}, [params.id]);
+			.then((data) => {
+				setDiscussion(data.data());
+			});
+	}, [discussion, params.id]);
 
 	const dispatch = useDispatch();
 	const { author, date, title, replies, content } = discussion;
