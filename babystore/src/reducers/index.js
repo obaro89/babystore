@@ -3,6 +3,7 @@ import * as types from '../actionTypes/types';
 const initialState = {
 	discussions: [],
 	isLoading: true,
+	sortedDiscussions: [],
 };
 export const discussionReducer = (state = initialState, action) => {
 	const { type, payload } = action;
@@ -13,6 +14,7 @@ export const discussionReducer = (state = initialState, action) => {
 				...state,
 				isLoading: false,
 				discussions: payload,
+				sortedDiscussions: payload,
 			};
 
 		case types.ISLOADING:
@@ -23,6 +25,12 @@ export const discussionReducer = (state = initialState, action) => {
 		case types.STOP_LOADING:
 			return {
 				...state,
+				isLoading: false,
+			};
+		case types.SORT_BY_CATEGORY:
+			return {
+				...state,
+				sortedDiscussions: payload,
 				isLoading: false,
 			};
 		default:
@@ -41,7 +49,7 @@ export const alertReduder = (state = [], action) => {
 			return [...state, payload];
 
 		case types.REMOVE_NOTIFICATION:
-			return state.filter((alert) => alert.id !== payload.id);
+			return state.filter(alert => alert.id !== payload.id);
 
 		default:
 			return state;

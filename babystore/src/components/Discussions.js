@@ -8,8 +8,10 @@ import firebase from 'firebase';
 import database from '../firebase/firebase';
 
 const Discussions = () => {
-	const { discussions, isLoading } = useSelector((state) => state.discussions);
-	const likePost = (id) => {
+	const { isLoading, sortedDiscussions } = useSelector(
+		state => state.discussions
+	);
+	const likePost = id => {
 		database
 			.collection('discussions')
 			.doc(id)
@@ -22,8 +24,8 @@ const Discussions = () => {
 			<div class='discussions'>
 				{isLoading && <Loading />}
 				{!isLoading &&
-					(discussions.length > 0 ? (
-						discussions.map(
+					(sortedDiscussions.length > 0 ? (
+						sortedDiscussions.map(
 							({ title, content, date, replies, likes, author, id }) => (
 								<section className='discussion' key={id}>
 									<div className='poster'>

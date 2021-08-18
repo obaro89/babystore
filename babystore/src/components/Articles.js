@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import database from '../firebase/firebase';
+import ArticleModal from './ArticleModal';
 import Loading from './Layout/Loading';
 
 const Articles = () => {
 	const [articles, setArticles] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
+	const [showModal, setShowModal] = useState(false);
+
+	const [modalState, setModalState] = useState({
+		title: '',
+		content: '',
+		source: '',
+	});
 
 	useEffect(() => {
 		database
@@ -22,35 +30,53 @@ const Articles = () => {
 		<Loading />
 	) : !isLoading && articles.length !== 0 ? (
 		<div id='article-content'>
+			{
+				<ArticleModal
+					showModal={showModal}
+					setShowModal={setShowModal}
+					articleTitle={modalState.title}
+					articleLink={modalState.source}
+				/>
+			}
 			{articles.length > 0 &&
 				articles.map(article => {
 					return (
-						<section className='articles'>
-							<h3 className='art-source'>
-								<a href={article.sourceLink}>{article.source}</a>
-							</h3>
-							<h2 className='title'>
-								<a className='links' href={article.sourceLink}>
-									{article.title}
-								</a>
-							</h2>
-							<small>21 Jan 2020</small>
-							<p className='art-img'>
-								<a href={article.sourceLink}>
-									<img src={article.imageLink} alt='' />
-								</a>
-							</p>
-							<p className='short-content'>{article.content}</p>
-							<p className='social'>
-								<span className='like'>
-									<i className='bi bi-hand-thumbs-up-fill'></i>&nbsp; 2
-								</span>
+						<React.Fragment>
+							<section className='articles'>
+								<h3 className='art-source'>
+									<a href={article.sourceLink}>{article.source}</a>
+								</h3>
+								<h2 className='title'>
+									<a className='links' href={article.sourceLink}>
+										{article.title}
+									</a>
+								</h2>
+								<small>21 Jan 2020</small>
+								<p className='art-img'>
+									<img
+										src={article.imageLink}
+										alt=''
+										onClick={() => {
+											setShowModal(!showModal);
+											setModalState({
+												title: article.title,
+												source: article.sourceLink,
+											});
+										}}
+									/>
+								</p>
+								<p className='short-content'>{article.content}</p>
+								<p className='social'>
+									<span className='like'>
+										<i className='bi bi-hand-thumbs-up-fill'></i>&nbsp; 2
+									</span>
 
-								<span className='share'>
-									<i className='bi bi-share-fill'></i>
-								</span>
-							</p>
-						</section>
+									<span className='share'>
+										<i className='bi bi-share-fill'></i>
+									</span>
+								</p>
+							</section>
+						</React.Fragment>
 					);
 				})}
 		</div>

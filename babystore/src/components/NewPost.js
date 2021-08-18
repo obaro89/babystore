@@ -16,7 +16,7 @@ const NewPost = () => {
 		author: '',
 	});
 
-	const handleAnonymous = (e) => {
+	const handleAnonymous = e => {
 		setAnonymous(!anonymous);
 		if (e.target.checked) {
 			setFormData({
@@ -26,31 +26,33 @@ const NewPost = () => {
 		}
 	};
 
-	const handleCategories = (e) => {
+	const handleCategories = e => {
 		let { value, checked } = e.target;
 		if (checked) {
 			setCategories([...categories, value]);
 		} else {
-			setCategories(categories.filter((c) => c !== value));
+			setCategories(categories.filter(c => c !== value));
 		}
 	};
 
-	const onChange = (e) => {
+	const onChange = e => {
 		setFormData({
 			...formData,
 			[e.target.name]: e.target.value,
 		});
 	};
 
-	const onSubmit = (e) => {
+	const onSubmit = e => {
 		e.preventDefault();
 		setIsLoading(true);
 		if (isEmpty(title) || isEmpty(content) || isEmpty(author)) {
 			setIsLoading(false);
-			return dispatch(setNotification('Some Fields are Empty', 'danger'));
+			return dispatch(
+				setNotification('Some Fields are Empty', 'danger')
+			);
 		}
 
-		addDiscussion({ ...formData, category: categories }).then((resp) => {
+		addDiscussion({ ...formData, category: categories }).then(resp => {
 			setIsLoading(false);
 			if (resp) {
 				setFormData({ title: '', content: '', author: '' });

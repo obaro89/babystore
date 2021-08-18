@@ -4,6 +4,10 @@
 	padding: 0;
 	font-family: sans-serif;
 }
+.links {
+	text-decoration: none;
+	color: #727272;
+}
 .links-reply-icon {
 	color: #ec70a7;
 }
@@ -72,10 +76,6 @@ nav {
 	font-weight: bold;
 	color: #ec70a7;
 	text-align: center;
-}
-.links {
-	text-decoration: none;
-	color: #727272;
 }
 
 .tab-links {
@@ -277,6 +277,7 @@ small {
 	z-index: 1000;
 	display: flex;
 	flex-direction: column;
+	border: 1px solid #e2dfdf;
 }
 .search-btn {
 	display: none;
