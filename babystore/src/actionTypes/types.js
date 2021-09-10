@@ -16,3 +16,4 @@ export const ORDER_BY_MOST_RECENT = 'ORDER_BY_MOST_RECENT';
 export const SEARCH = 'SEARCH';
 export const ISLOGGEDIN = 'ISLOGGEDIN';
 export const LOAD_ARTICLES = 'LOAD_ARTICLES';
+export const GET_ARTICLES = 'GET_ARTICLES';

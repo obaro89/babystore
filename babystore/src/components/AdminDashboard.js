@@ -3,7 +3,7 @@ import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from 'validator';
 import { setNotification } from './../actions/notification';
-import { addArticle } from '../actions/admin';
+import { addArticle } from '../actions/articles';
 
 const AdminDashboard = () => {
 	const history = useHistory();
@@ -41,7 +41,7 @@ const AdminDashboard = () => {
 		addArticle(articleData).then(res => {
 			if (res) {
 				return dispatch(
-					setNotification('A new article has been added', 'success')
+					setNotification('A new article has been added', 'success', 2000)
 				);
 			}
 

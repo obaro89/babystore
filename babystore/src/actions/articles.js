@@ -3,16 +3,19 @@ import database from '../firebase/firebase';
 import firebase from 'firebase';
 import { setNotification } from './notification';
 
-export const getArticle = () => async (dispatch) => {
+export const getArticle = () => async dispatch => {
 	try {
 		//listen for real time updates on database
 		database
 			.collection('articles')
 			.orderBy('date', 'desc')
-			.onSnapshot((snapShot) => {
+			.onSnapshot(snapShot => {
 				dispatch({
 					type: types.GET_ARTICLES,
-					payload: snapShot.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
+					payload: snapShot.docs.map(doc => ({
+						...doc.data(),
+						id: doc.id,
+					})),
 				});
 			});
 	} catch (error) {
@@ -20,13 +23,19 @@ export const getArticle = () => async (dispatch) => {
 	}
 };
 
-export const addArticle = async ({ title, content, source, sourceLink imageLink }) => {
+export const addArticle = async ({
+	title,
+	content,
+	source,
+	sourceLink,
+	imageLink,
+}) => {
 	try {
 		await database.collection('articles').add({
 			title,
 			content,
 			source,
-            sourceLink,
+			sourceLink,
 			imageLink,
 			date: firebase.firestore.FieldValue.serverTimestamp(),
 		});
@@ -34,4 +43,13 @@ export const addArticle = async ({ title, content, source, sourceLink imageLink 
 	} catch (error) {
 		return false;
 	}
+};
+
+export const updateArticle = (id, articleData) => {
+	database
+		.collection('articles')
+		.doc(id)
+		.update(articleData)
+		.then(() => true)
+		.catch(() => false);
 };

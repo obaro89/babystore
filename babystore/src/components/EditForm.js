@@ -4,9 +4,9 @@ import { isEmpty } from 'validator';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { setNotification } from './../actions/notification';
-import { addArticle } from '../actions/admin';
 import firebase from 'firebase';
 import database from '../firebase/firebase';
+import { updateArticle } from './../actions/articles';
 
 const EditForm = () => {
 	const params = useParams();
@@ -14,6 +14,8 @@ const EditForm = () => {
 	const dispatch = useDispatch();
 	const { isLoggedIn } = useSelector(state => state.admin);
 	const [article, setArticle] = useState('');
+
+	const [articleData, setArticleData] = useState({});
 	useEffect(() => {
 		database
 			.collection('articles')
@@ -22,24 +24,14 @@ const EditForm = () => {
 			.then(doc => {
 				setArticle({ ...doc.data(), id: doc.id });
 			});
-	}, [article]);
+	}, []);
 
-	// const [articleData, setArticleData] = useState({
-	// 	content: article.content,
-	// 	sourceLink: '',
-	// 	title: '',
-	// 	imageLink: '',
-	// 	source: '',
-	// });
-
-	// const { title, imageLink, source, sourceLink, content } =
-	// 	articleData;
-	// const onChange = e => {
-	// 	setArticleData({
-	// 		...articleData,
-	// 		[e.target.name]: e.target.value,
-	// 	});
-	// };
+	const onChange = event => {
+		setArticleData({
+			...articleData,
+			[event.target.name]: event.target.value,
+		});
+	};
 
 	const onSubmit = async e => {
 		e.preventDefault();
@@ -55,19 +47,18 @@ const EditForm = () => {
 			);
 		}
 
-		// addArticle(articleData).then(res => {
-		// 	if (res) {
-		// 		return dispatch(
-		// 			setNotification('A new article has been added', 'success')
-		// 		);
-		// 	}
+		try {
+			await updateArticle(params.id, articleData);
 
-		// 	return dispatch(
-		// 		setNotification('Oops! an error occurred', 'danger')
-		// 	);
-		// });
-
-		history.push('/articles');
+			dispatch(
+				setNotification('Article updated successfully', 'success', 2000)
+			);
+			history.push('/articles');
+		} catch (error) {
+			return dispatch(
+				setNotification('Oops! an error occurred', 'danger')
+			);
+		}
 	};
 
 	return (
@@ -77,39 +68,43 @@ const EditForm = () => {
 					<p>
 						<label for='Title'>Title</label>
 						<textarea
-							value={article.title}
+							defaultValue={article.title}
 							name='title'
 							placeholder='Add a title for your Article'
 							required
+							onChange={onChange}
 						></textarea>
 					</p>
 					<p>
 						<label for='content'>Content</label>
 						<textarea
 							required
-							value={article.content}
+							defaultValue={article.content}
 							name='content'
 							placeholder='Enter Article content'
+							onChange={onChange}
 						></textarea>
 					</p>
 					<p>
 						<label for='content'>Image</label>
 						<input
 							required
-							value={article.imageLink}
+							defaultValue={article.imageLink}
 							name='imageLink'
 							className='author-input'
 							placeholder='Enter Link to image'
+							onChange={onChange}
 						/>
 					</p>
 					<p>
 						<label for='content'>Source</label>
 						<input
 							required
-							value={article.source}
+							defaultValue={article.source}
 							name='source'
 							className='author-input'
 							placeholder='Enter The Source of Article'
+							onChange={onChange}
 						/>
 					</p>
 
@@ -119,14 +114,15 @@ const EditForm = () => {
 							required
 							type='text'
 							name='sourceLink'
-							value={article.sourceLink}
+							defaultValue={article.sourceLink}
 							placeholder='Enter the link to article source'
 							className='author-input'
+							onChange={onChange}
 						/>
 					</p>
 
 					<button onClick={onSubmit} className='btn btn-new-post large mt'>
-						Post
+						Update
 					</button>
 				</form>
 			</section>

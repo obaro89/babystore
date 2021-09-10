@@ -38,7 +38,7 @@ const Articles = () => {
 				setArticles(data);
 				setIsLoading(false);
 			});
-	}, []);
+	}, [articles]);
 
 	const onDelete = (id, doc) => {
 		if (
@@ -49,7 +49,9 @@ const Articles = () => {
 				.doc(id)
 				.delete()
 				.then(() => {
-					dispatch(setNotification('Successfully deleted', 'success'));
+					dispatch(
+						setNotification('Successfully deleted', 'success', 2000)
+					);
 				})
 				.catch(error => {
 					console.log(error);
@@ -85,7 +87,7 @@ const Articles = () => {
 							<section className='articles'>
 								<EditArticle articleID={article.id} />
 								<DeleteAction
-									onDelete={() => onDelete(articles.id, 'articles')}
+									onDelete={() => onDelete(article.id, 'articles')}
 								/>
 								<h3 className='art-source'>
 									<a href={article.sourceLink}>{article.source}</a>

@@ -20,14 +20,6 @@ export const addArticle = articleData => async dispatch => {
 	}
 };
 
-export const deleteArticle = () => {};
-
-export const updateArticle = () => {};
-
-export const deleteComment = () => {};
-
-export const deleteDiscussion = () => {};
-
 export const adminLogout = () => {};
 export const adminLogin = async (username, password) => {
 	try {
