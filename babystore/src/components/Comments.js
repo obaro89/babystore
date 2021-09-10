@@ -9,8 +9,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { isEmpty } from 'validator';
 import { useDispatch } from 'react-redux';
 import { setNotification } from '../actions/notification';
+import DeleteAction from './Delete';
 
-const Comments = (props) => {
+const Comments = props => {
 	const [discussion, setDiscussion] = useState({
 		author: '',
 		date: '',
@@ -27,7 +28,7 @@ const Comments = (props) => {
 			.collection('discussions')
 			.doc(params.id)
 			.get()
-			.then((data) => {
+			.then(data => {
 				setDiscussion(data.data());
 			});
 	}, [discussion, params.id]);
@@ -37,10 +38,12 @@ const Comments = (props) => {
 	const [commentInput, setCommentInput] = useState('');
 	const [posterInput, setPosterInput] = useState('');
 
-	const postComment = (e) => {
+	const postComment = e => {
 		e.preventDefault();
 		if (isEmpty(commentInput) || isEmpty(posterInput)) {
-			return dispatch(setNotification('Some Fields are Empty', 'danger'));
+			return dispatch(
+				setNotification('Some Fields are Empty', 'danger')
+			);
 		}
 		database
 			.collection('discussions')
@@ -57,6 +60,22 @@ const Comments = (props) => {
 				setCommentInput('');
 				setPosterInput('');
 			});
+	};
+
+	const onDeleteComment = (docID, object) => {
+		if (
+			window.confirm('Are you sure you want to delete this comment?')
+		) {
+			database
+				.collection('discussions')
+				.doc(docID)
+				.update({
+					replies: firebase.firestore.FieldValue.arrayRemove(object),
+				})
+				.then(() => {
+					dispatch(setNotification('Successfully deleted', 'success'));
+				});
+		}
 	};
 	return isLoading ? (
 		<Loading />
@@ -85,6 +104,11 @@ const Comments = (props) => {
 					<div className='comments'>
 						{replies.map(({ replyID, text, poster }) => (
 							<p className='comment-page' key={replyID}>
+								<DeleteAction
+									onDelete={() =>
+										onDeleteComment(params.id, { poster, replyID, text })
+									}
+								/>
 								<div className='poster-profile'>
 									<p className='poster-details'>
 										<span className='name'>{poster}</span>
@@ -101,7 +125,7 @@ const Comments = (props) => {
 								name=''
 								value={posterInput}
 								placeholder='Your Name'
-								onChange={(e) => setPosterInput(e.target.value)}
+								onChange={e => setPosterInput(e.target.value)}
 							/>
 						</p>
 						<p>
@@ -110,7 +134,7 @@ const Comments = (props) => {
 								name=''
 								value={commentInput}
 								placeholder='Your message here'
-								onChange={(e) => setCommentInput(e.target.value)}
+								onChange={e => setCommentInput(e.target.value)}
 							></textarea>
 						</p>
 

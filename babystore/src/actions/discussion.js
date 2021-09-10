@@ -55,3 +55,18 @@ export const sortDiscussion =
 			payload: sorted,
 		});
 	};
+
+export const search = (discussions, searchText) => dispatch => {
+	let res = discussions.filter(discussion =>
+		discussion.content.includes(searchText)
+	);
+	if (res.length === 0) {
+		res = discussions.filter(discussion =>
+			discussion.title.includes(searchText)
+		);
+	}
+	dispatch({
+		type: types.SEARCH,
+		payload: res,
+	});
+};

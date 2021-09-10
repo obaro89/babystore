@@ -1,9 +1,12 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import Slide from 'react-reveal/Slide';
+//import {Alert} from 'react-bootstrap'
+// import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
 
 const Notification = () => {
-	const alertState = useSelector((state) => state.alert);
+	const alertState = useSelector(state => state.alert);
 	return (
 		alertState !== null &&
 		alertState.length > 0 &&

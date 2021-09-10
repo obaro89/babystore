@@ -1,16 +1,19 @@
 import React from 'react';
 import profilePhoto from '../img/profile.jpg';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import formatDate from '../utilities/dateFormater';
 import Loading from './Layout/Loading';
 import firebase from 'firebase';
 import database from '../firebase/firebase';
+import DeleteAction from './Delete';
+import { setNotification } from '../actions/notification';
 
 const Discussions = () => {
 	const { isLoading, sortedDiscussions } = useSelector(
 		state => state.discussions
 	);
+	const dispatch = useDispatch();
 	const likePost = id => {
 		database
 			.collection('discussions')
@@ -19,6 +22,24 @@ const Discussions = () => {
 				likes: firebase.firestore.FieldValue.increment(1),
 			});
 	};
+
+	const onDelete = (id, doc) => {
+		if (
+			window.confirm('Are you sure you want to delete this discussion?')
+		) {
+			database
+				.collection(doc)
+				.doc(id)
+				.delete()
+				.then(() => {
+					dispatch(setNotification('Successfully deleted', 'success'));
+				})
+				.catch(error => {
+					console.log(error);
+				});
+		}
+	};
+
 	return (
 		<section>
 			<div class='discussions'>
@@ -28,6 +49,7 @@ const Discussions = () => {
 						sortedDiscussions.map(
 							({ title, content, date, replies, likes, author, id }) => (
 								<section className='discussion' key={id}>
+									<DeleteAction onDelete={() => onDelete(id, 'discussions')} />
 									<div className='poster'>
 										<div className='poster-profile'>
 											<img src={profilePhoto} alt='' />

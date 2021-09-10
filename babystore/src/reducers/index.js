@@ -28,18 +28,30 @@ export const discussionReducer = (state = initialState, action) => {
 				isLoading: false,
 			};
 		case types.SORT_BY_CATEGORY:
+		case types.SEARCH:
 			return {
 				...state,
 				sortedDiscussions: payload,
 				isLoading: false,
 			};
+
 		default:
 			return state;
 	}
 };
 
 export const articleReducer = (state = [], action) => {
-	return state;
+	const { type, payload } = action;
+	switch (type) {
+		case types.LOAD_ARTICLES:
+			return {
+				...state,
+				articles: [...payload],
+			};
+
+		default:
+			return state;
+	}
 };
 
 export const alertReduder = (state = [], action) => {
@@ -50,6 +62,28 @@ export const alertReduder = (state = [], action) => {
 
 		case types.REMOVE_NOTIFICATION:
 			return state.filter(alert => alert.id !== payload.id);
+
+		default:
+			return state;
+	}
+};
+
+const initialAdminState = {
+	isAdmin: false,
+	isLoggedIn: false,
+};
+export const adminAuthReducer = (
+	state = initialAdminState,
+	action
+) => {
+	const { type } = action;
+	switch (type) {
+		case types.ISLOGGEDIN:
+			return {
+				...state,
+				isAdmin: true,
+				isLoggedIn: true,
+			};
 
 		default:
 			return state;

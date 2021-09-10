@@ -13,3 +13,6 @@ export const SORT_BY_CATEGORY = 'SORT_BY_CATEGORY';
 export const ORDER_BY_NEWEST = 'ORDER_BY_NEWEST';
 export const ORDER_BY_OLDEST = 'ORDER_BY_OLDEST';
 export const ORDER_BY_MOST_RECENT = 'ORDER_BY_MOST_RECENT';
+export const SEARCH = 'SEARCH';
+export const ISLOGGEDIN = 'ISLOGGEDIN';
+export const LOAD_ARTICLES = 'LOAD_ARTICLES';

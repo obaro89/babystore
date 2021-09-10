@@ -5,6 +5,7 @@ import {
 	alertReduder,
 	articleReducer,
 	discussionReducer,
+	adminAuthReducer,
 } from './reducers/index';
 
 const store = createStore(
@@ -12,6 +13,7 @@ const store = createStore(
 		discussions: discussionReducer,
 		articles: articleReducer,
 		alert: alertReduder,
+		admin: adminAuthReducer,
 	}),
 	composeWithDevTools(applyMiddleware(thunk))
 );

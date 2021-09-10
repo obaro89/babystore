@@ -1,26 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { sortDiscussion } from '../actions/discussion';
 import { useHistory } from 'react-router';
 
 const FilterCategory = ({ openCloseMenu }) => {
+	const [activeState, setActiveState] = useState({
+		isActive: null,
+		categories: [
+			{ name: 'baby' },
+			{ name: 'toddler' },
+			{ name: 'health' },
+			{ name: 'parenting' },
+			{ name: 'pregnancy' },
+			{ name: 'shopping' },
+		],
+	});
+
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const { discussions } = useSelector(state => state.discussions);
-	const sortByCategory = typeOfSort => {
+	const sortByCategory = (typeOfSort, index) => {
 		dispatch(sortDiscussion(discussions, typeOfSort));
+		toggleActive(index);
 		history.push('/');
 	};
+
+	const toggleActive = index => {
+		setActiveState({
+			...activeState,
+			isActive: activeState.categories[index],
+		});
+	};
+	const toggleActiveStyle = index => {
+		return activeState.categories[index] === activeState.isActive
+			? 'active-btn'
+			: 'inactive';
+	};
 	return (
-		<section>
+		<section className='row'>
 			<section className='filters'>
 				<div className='inner-filter'>
-					<p onClick={e => sortByCategory('baby')}>Baby</p>
-					<p onClick={e => sortByCategory('toddler')}>Toddler</p>
-					<p onClick={e => sortByCategory('health')}>Health</p>
-					<p onClick={e => sortByCategory('parenting')}>Parenting</p>
-					<p onClick={e => sortByCategory('pregnancy')}>pregnancy</p>
-					<p onClick={e => sortByCategory('shopping')}>Shopping</p>
+					{activeState.categories.map((cat, index) => (
+						<p
+							key={index}
+							onClick={e => sortByCategory(cat.name, index)}
+							className={toggleActiveStyle(index)}
+						>
+							{cat.name}
+						</p>
+					))}
 				</div>
 				<div className='filter-label' onClick={openCloseMenu}>
 					<i className='bi bi-funnel-fill space pink'></i>

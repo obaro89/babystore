@@ -4,6 +4,12 @@
 	padding: 0;
 	font-family: sans-serif;
 }
+
+.active-btn {
+	background-color: #ec70a7;
+	color: white;
+	font-weight: bolder;
+}
 .links {
 	text-decoration: none;
 	color: #727272;
@@ -68,6 +74,7 @@ nav {
 	top: 0;
 	left: 0;
 	background-color: white;
+	z-index: 2000;
 }
 
 .logo {
@@ -274,7 +281,7 @@ small {
 	position: absolute;
 	top: 0;
 	left: 0;
-	z-index: 1000;
+	z-index: 2500;
 	display: flex;
 	flex-direction: column;
 	border: 1px solid #e2dfdf;
@@ -464,9 +471,18 @@ small {
 	border-radius: 5px;
 }
 /* footer styles */
+.footer {
+	margin-top: 10px;
+	margin-left: 20px;
+	margin-bottom: 20px;
+}
+.footer span {
+	padding-left: 20px;
+}
 .footer a {
 	position: absolute;
 }
+
 .hide {
 	display: none;
 }
@@ -692,4 +708,45 @@ small {
 		border-radius: 3px;
 		transition: all;
 	}
+}
+
+/* Admin dashboard styles */
+.deletebtn {
+	position: absolute;
+	top: 10;
+	right: 10px;
+}
+
+.editbtn {
+	position: absolute;
+	top: 20px;
+	right: 50px;
+}
+.discussion,
+.comment-page,
+.articles {
+	position: relative;
+}
+.deletebtn button {
+	color: red;
+	padding: 5px;
+	border: 1px solid #e0dbdb;
+	cursor: pointer;
+}
+.editbtn .edit {
+	color: green;
+	padding: 6px;
+	border: 1px solid #e0dbdb;
+	cursor: pointer;
+	background-color: #efefef;
+}
+
+.add-article {
+	width: 150px;
+	margin: 0 auto;
+	display: flex;
+}
+.linkpost {
+	text-decoration: none;
+	margin-bottom: 10px;
 }
