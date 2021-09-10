@@ -68,7 +68,7 @@ const NewPost = () => {
 	return isLoading ? (
 		<Loading />
 	) : (
-		<div id='content' className='add-post-content'>
+		<div className='add-post-content'>
 			<section className='new-post'>
 				<form className='add-post'>
 					<p>
