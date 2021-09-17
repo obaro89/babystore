@@ -1,6 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
-const FilterMenu = ({ openCloseMenu, openClass }) => {
+const FilterMenu = ({ openCloseMenu, openClass, applyFilter }) => {
+	const { discussions } = useSelector(state => state.discussions);
+	const [sortType, setSortType] = useState('newtoold');
+
+	const onApply = () => {
+		applyFilter(discussions, sortType);
+		openCloseMenu();
+	};
 	return (
 		<div id='filter-menu' className={openClass}>
 			<div id='top'>
@@ -14,39 +22,29 @@ const FilterMenu = ({ openCloseMenu, openClass }) => {
 					<li className='li-active'>
 						<span>By Sort</span>
 						<ul className='submenu'>
-							<li>Newest to oldest</li>
-							<li>Oldest to newest</li>
-							<li>Most Relevant</li>
-						</ul>
-					</li>
-					<li>
-						<a href='/'>By Date</a>
-						<ul className='submenu hide'>
-							<li>Last 1 hour</li>
-							<li>Last 1 day</li>
-							<li>Last 1 week</li>
-							<li>Last Month</li>
-						</ul>
-					</li>
-					<li>
-						<a href='/'>By Categories</a>
-						<ul className='submenu hide'>
-							<li>Baby</li>
-							<li>Toddler</li>
-							<li>Health</li>
-							<li>Parenting</li>
-							<li>Pregnancy</li>
-							<li>Shopping</li>
+							<li onClick={() => setSortType('newtoold')}>
+								Newest to oldest
+							</li>
+							<li onClick={() => setSortType('oldtonew')}>
+								Oldest to newest
+							</li>
+							<li onClick={() => setSortType('mostrelevant')}>
+								Most Relevant
+							</li>
 						</ul>
 					</li>
 				</ul>
 			</div>
 			<div id='bottom'>
 				<div>
-					<a href='/'>RESET</a>
+					<a href='#' onClick={openCloseMenu}>
+						RESET
+					</a>
 				</div>
 				<div>
-					<a href='/'>APPLY</a>
+					<a href='#' onClick={onApply}>
+						APPLY
+					</a>
 				</div>
 			</div>
 		</div>

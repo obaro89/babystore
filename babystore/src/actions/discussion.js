@@ -47,13 +47,33 @@ export const addDiscussion = async ({
 
 export const sortDiscussion =
 	(discussions, typeOfSort) => async dispatch => {
-		let sorted = discussions.filter(discussion =>
-			discussion.category.includes(typeOfSort)
-		);
-		dispatch({
-			type: types.SORT_BY_CATEGORY,
-			payload: sorted,
-		});
+		let sorted = [];
+		if (typeOfSort === 'mostrelevant') {
+			sorted = discussions.sort((a, b) => b.likes - a.likes);
+			dispatch({
+				type: types.SORT_BY_RELEVANCE,
+				payload: sorted,
+			});
+		} else if (typeOfSort === 'newtoold') {
+			dispatch({
+				type: types.SORT_BY_NEWEST,
+				payload: discussions,
+			});
+		} else if (typeOfSort === 'oldtonew') {
+			sorted = discussions.reverse();
+			dispatch({
+				type: types.ORDER_BY_OLDEST,
+				payload: sorted,
+			});
+		} else {
+			sorted = discussions.filter(discussion =>
+				discussion.category.includes(typeOfSort)
+			);
+			dispatch({
+				type: types.SORT_BY_CATEGORY,
+				payload: sorted,
+			});
+		}
 	};
 
 export const search = (discussions, searchText) => dispatch => {

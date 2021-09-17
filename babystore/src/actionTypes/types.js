@@ -17,3 +17,6 @@ export const SEARCH = 'SEARCH';
 export const ISLOGGEDIN = 'ISLOGGEDIN';
 export const LOAD_ARTICLES = 'LOAD_ARTICLES';
 export const GET_ARTICLES = 'GET_ARTICLES';
+export const SORT_BY_RELEVANCE = 'SORT_BY_RELEVANCE';
+export const SORT_BY_NEWEST = 'SORT_BY_NEWEST';
+export const SORT_BY_OLDEST = 'SORT_BY_OLDEST';

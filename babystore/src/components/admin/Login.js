@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import * as types from '../../actionTypes/types';
+import database from '../../firebase/firebase';
 
 const Login = () => {
 	const history = useHistory();
@@ -19,6 +20,7 @@ const Login = () => {
 
 	const onSubmit = e => {
 		e.preventDefault();
+		database.collection('admin').get();
 		dispatch({
 			type: types.ISLOGGEDIN,
 		});
