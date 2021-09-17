@@ -3,6 +3,7 @@ import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import * as types from '../../actionTypes/types';
 import database from '../../firebase/firebase';
+import { setNotification } from '../../actions/notification';
 
 const Login = () => {
 	const history = useHistory();
@@ -17,17 +18,33 @@ const Login = () => {
 			[e.target.name]: e.target.value,
 		});
 	};
+	const { username, password } = formData;
 
 	const onSubmit = e => {
 		e.preventDefault();
-		database.collection('admin').get();
-		dispatch({
-			type: types.ISLOGGEDIN,
-		});
-		history.push('/articles');
+		database
+			.collection('admin')
+			.get()
+			.then(data => {
+				let admin = data.docs
+					.map(doc => doc.data())
+					.filter(
+						adm => adm.name === username && adm.password === password
+					);
+
+				if (admin.length > 0) {
+					dispatch({
+						type: types.ISLOGGEDIN,
+					});
+					history.push('/articles');
+				} else {
+					return dispatch(
+						setNotification('Invalid Credentials', 'danger')
+					);
+				}
+			});
 	};
 
-	const { username, password } = formData;
 	return (
 		<div className='add-post-content'>
 			<section className='new-post'>
