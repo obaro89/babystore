@@ -4,9 +4,11 @@ import { addDiscussion } from '../actions/discussion';
 import Loading from './Layout/Loading';
 import { isEmpty } from 'validator';
 import { setNotification } from '../actions/notification';
+import { useHistory } from 'react-router';
 
 const NewPost = () => {
 	const dispatch = useDispatch();
+	const history = useHistory()
 	const [isLoading, setIsLoading] = useState(false);
 	const [anonymous, setAnonymous] = useState(false);
 	const [categories, setCategories] = useState([]);
@@ -59,6 +61,7 @@ const NewPost = () => {
 				dispatch(
 					setNotification('Your new discussion has been posted', 'success')
 				);
+				//history.push('/discussions')
 			}
 		});
 	};
